@@ -2,8 +2,9 @@ import LazyLoad from "react-lazyload";
 import React from "react";
 
 import "./profile-card.css";
+import { Mentor } from "../interfaces";
 
-const ReadMore = ({ onReadMore }) => (
+const ReadMore = ({ onReadMore }: { onReadMore: () => void }) => (
   <div className="card-read-more-container">
     <button className="card-read-more" onClick={onReadMore}>
       Read More
@@ -11,7 +12,13 @@ const ReadMore = ({ onReadMore }) => (
   </div>
 );
 
-const ProfileCard = ({ mentor, onReadMore }) => {
+const ProfileCard = ({
+  mentor,
+  onReadMore,
+}: {
+  mentor: Mentor;
+  onReadMore: () => void;
+}) => {
   const { name, role, organisation, thumbnailImageUrl } = mentor;
   return (
     <div className="card">

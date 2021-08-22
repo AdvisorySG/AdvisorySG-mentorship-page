@@ -38,9 +38,17 @@
     ]
   },
   "devDependencies": {
+    "@types/body-scroll-lock": "^3.1.0",
+    "@types/lunr": "^2.3.4",
+    "@types/react": "^17.0.19",
+    "@types/react-dom": "^17.0.9",
+    "@types/react-lazyload": "^3.1.1",
+    "@types/react-modal": "^3.12.1",
+    "@types/react-tabs": "^2.3.3",
     "airtable": "^0.11.1",
     "husky": "^7.0.1",
     "prettier": "2.3.2",
-    "pretty-quick": "^3.1.1"
+    "pretty-quick": "^3.1.1",
+    "typescript": "^4.3.5"
   }
 }

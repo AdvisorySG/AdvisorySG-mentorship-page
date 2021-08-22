@@ -7,21 +7,24 @@ import ProfileCard from "./components/profile-card";
 import ProfileModal from "./components/profile-modal";
 import SearchBar from "./components/search-bar";
 import { fetchWaves } from "./waves";
-
+import { Mentor } from "./interfaces";
 import "./App.css";
 
-const setHash = (hash) => window.history.replaceState({}, "", `#${hash}`);
+const setHash = (hash: string) => {
+  window.history.replaceState({}, "", `#${hash}`);
+};
 
 function App() {
   const [activeWaveIndex, setActiveWaveIndex] = useState(0);
-  const [waves, setWaves] = useState([{}]);
+  const [waves, setWaves] = useState<{ [key: string]: Mentor }[]>([{}]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const convertIndex = (index) => waves.length - 1 - index;
-  const activateTab = (tabIndex) => setActiveWaveIndex(convertIndex(tabIndex));
+  const convertIndex = (index: number) => waves.length - 1 - index;
+  const activateTab = (tabIndex: number) =>
+    setActiveWaveIndex(convertIndex(tabIndex));
 
   const [activeMentorId, setActiveMentorId] = useState("");
-  const activateModal = (waveIndex, mentorId) => {
+  const activateModal = (waveIndex: number, mentorId: string) => {
     setActiveWaveIndex(waveIndex);
     setActiveMentorId(mentorId);
     setIsModalOpen(true);
@@ -43,13 +46,17 @@ function App() {
       const matchingWaves = waves
         .map((wave, waveIndex) => [wave, waveIndex])
         .filter(([wave]) => wave.hasOwnProperty(mentorId));
+
       if (
         matchingWaves.length > 0 &&
         (!isModalOpen || mentorId !== activeMentorId)
       ) {
         const [, waveIndex] = matchingWaves[0];
-        activateModal(waveIndex, mentorId);
-        return true;
+
+        if (typeof waveIndex === "number") {
+          activateModal(waveIndex, mentorId);
+          return true;
+        }
       }
     };
 
@@ -78,7 +85,7 @@ function App() {
   }, [isModalOpen, activeMentorId, waves]);
 
   const [hasSearch, setHasSearch] = useState(false);
-  const [searchResults, setSearchResults] = useState([]);
+  const [searchResults, setSearchResults] = useState<string[]>([]);
 
   const visibleMentorIds = useMemo(
     () => (hasSearch ? searchResults : Object.keys(waves[activeWaveIndex])),
@@ -120,7 +127,9 @@ function App() {
                   .map((wave, waveIndex) => [wave, waveIndex])
                   .reverse()
                   .map(([, waveIndex]) => (
-                    <Tab key={waveIndex}>Wave {waveIndex + 1}</Tab>
+                    <Tab key={waveIndex as number}>
+                      Wave {(waveIndex as number) + 1}
+                    </Tab>
                   ))}
               </TabList>
 

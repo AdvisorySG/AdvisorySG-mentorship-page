@@ -4,21 +4,29 @@ import { disableBodyScroll, clearAllBodyScrollLocks } from "body-scroll-lock";
 import { MdClose } from "react-icons/md";
 
 import "./profile-modal.css";
+import { Mentor } from "../interfaces";
 
-const CloseButton = ({ onClose }) => (
+const CloseButton = ({ onClose }: { onClose: () => void }) => (
   <button className="modal-close" onClick={onClose}>
     <MdClose />
   </button>
 );
 
-const ProfileModal = ({ isOpen, mentor, onClose }) => {
-  mentor || (mentor = {});
-
+const ProfileModal = ({
+  isOpen,
+  mentor,
+  onClose,
+}: {
+  isOpen: boolean;
+  mentor?: Mentor;
+  onClose: () => void;
+}) => {
   const scrollEl = useRef(null);
 
   // Disable body scroll when modal is open.
   const onAfterOpenHandler = () =>
-    disableBodyScroll(scrollEl.current, { reserveScrollBarGap: true });
+    disableBodyScroll(scrollEl.current as any, { reserveScrollBarGap: true });
+
   const onAfterCloseHandler = () => clearAllBodyScrollLocks();
 
   return (
@@ -39,30 +47,30 @@ const ProfileModal = ({ isOpen, mentor, onClose }) => {
         <div className="modal-left">
           <img
             className="modal-image"
-            src={process.env.PUBLIC_URL + mentor.fullImageUrl}
-            alt={mentor.name}
+            src={process.env.PUBLIC_URL + mentor?.fullImageUrl}
+            alt={mentor?.name}
           />
           <div className="modal-metadata-container">
-            <h2>{mentor.name}</h2>
+            <h2>{mentor?.name}</h2>
             <div className="modal-metadata">
-              <strong>Role:</strong> {mentor.role}
+              <strong>Role:</strong> {mentor?.role}
             </div>
-            {mentor.industries && (
+            {mentor?.industries && (
               <div className="modal-metadata">
                 <strong>Industries:</strong> {mentor.industries.join(", ")}
               </div>
             )}
-            {mentor.organisation && (
+            {mentor?.organisation && (
               <div className="modal-metadata">
                 <strong>Organisation:</strong> {mentor.organisation}
               </div>
             )}
-            {mentor.school && (
+            {mentor?.school && (
               <div className="modal-metadata">
                 <strong>School Graduated From:</strong> {mentor.school}
               </div>
             )}
-            {mentor.courseOfStudy && (
+            {mentor?.courseOfStudy && (
               <div className="modal-metadata">
                 <strong>Course of Study:</strong> {mentor.courseOfStudy}
               </div>
@@ -70,11 +78,15 @@ const ProfileModal = ({ isOpen, mentor, onClose }) => {
           </div>
         </div>
         <div className="modal-right">
-          <p className="modal-bio">{mentor.fullBio}</p>
+          <p className="modal-bio">{mentor?.fullBio}</p>
         </div>
       </div>
     </ReactModal>
   );
+};
+
+ProfileModal.defaultProps = {
+  mentor: {},
 };
 
 export default ProfileModal;
