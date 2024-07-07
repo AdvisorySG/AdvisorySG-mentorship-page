@@ -9,6 +9,7 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import "../styles/ResultView.css";
+import { trackClicks } from "../scripts/trackClicks";
 
 const ResultViewGrid = ({
   displayResult,
@@ -31,6 +32,8 @@ const ResultViewGrid = ({
 
   useEffect(() => {
     if (isModalOpen) {
+      console.log("name", displayName);
+      trackClicks(displayName);
       window.onpopstate = () => {
         setIsModalOpen(false);
       };
