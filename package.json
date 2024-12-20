@@ -55,7 +55,7 @@
     "autoprefixer": "^10.4.20",
     "aws-sdk": "^2.1529.0",
     "eslint-config-next": "^14.2.6",
-    "husky": "^9.0.11",
+    "husky": "^9.1.7",
     "postcss": "^8.4.35",
     "prettier": "^3.3.3",
     "pretty-quick": "^4.0.0",
