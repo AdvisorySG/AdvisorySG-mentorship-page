@@ -20,6 +20,7 @@ import ClearFacets from "../../components/ResetButton";
 import ResultView from "../../components/ResultView";
 import "@elastic/react-search-ui-views/lib/styles/styles.css";
 import "../../styles/App.css";
+import { useNextRouting } from "../../utils/useNextRouting";
 
 const App = () => {
   const WAVE = { waveId: "2024", waveName: "2024 Wave" };
@@ -75,10 +76,15 @@ const App = () => {
     },
   };
 
+  const configWithNextRouting = useNextRouting(
+    configurationOptions,
+    "/mentors",
+  );
+
   return (
     <Canvas>
       <div className="results" id="mentors">
-        <SearchProvider config={configurationOptions}>
+        <SearchProvider config={configWithNextRouting}>
           <div className="App">
             <Layout
               header={

@@ -1,7 +1,7 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 
-import { Chip } from "@mui/material";
-
+import { Chip, Snackbar, IconButton } from "@mui/material";
+import ShareIcon from "@mui/icons-material/Share";
 import type { DisplayResult } from "./ResultView";
 
 const ResultViewList = ({
@@ -20,7 +20,21 @@ const ResultViewList = ({
     displaySchool,
     industryColors,
     thumbnailImageUrl,
+    id,
   } = displayResult;
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+  const handleCopyLink = () => {
+    // Construct link
+    const link = `${window.location.origin}${window.location.pathname}?uid=${id}&q=${id}`;
+
+    // Copy link to clipboard
+    navigator.clipboard.writeText(link).then(() => {
+      setSnackbarOpen(true);
+      setTimeout(() => setSnackbarOpen(false), 1000);
+    });
+  };
 
   return (
     <div className="sui-result">
@@ -40,6 +54,10 @@ const ResultViewList = ({
               }}
             />
           )}
+          <IconButton aria-label="share" onClick={handleCopyLink}>
+            <ShareIcon />
+          </IconButton>
+          <Snackbar open={snackbarOpen} message="Link copied to clipboard" />
         </div>
         <ul className="sui-result__details">
           <li className="sui-result__industries">

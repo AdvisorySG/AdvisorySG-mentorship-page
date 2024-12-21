@@ -36,23 +36,47 @@ const ResultViewGrid = ({
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // Inspired by code from https://github.com/AdvisorySG/mentorship-page/pull/731/commits/b234ec556bc6d7de94432bb2f2a87573c20963ba
   const handleOpen = () => {
-    window.history.pushState({}, "");
+    // Open the modal
+    const newUrl = `${window.location.origin}${window.location.pathname}?uid=${id}`;
+    window.history.pushState({ id }, "", newUrl);
     setIsModalOpen(true);
+
+    // Track interaction
     window.umami.track("Click", { id, env: process.env.NODE_ENV });
+
+    // Log
+    console.log(
+      "ResultViewGrid :: handleOpen : new modal opened with URL",
+      newUrl,
+    );
   };
 
   const handleClose = () => {
-    window.history.back();
+    if (window.history.state && window.history.state.id === id) {
+      // Case 1: User clicked into the modal -> We should execute `window.history.back()` to return to the previous URL
+      console.log("ResultViewGrid :: handleClose :: going back");
+      window.history.back();
+    } else {
+      // Case 2: User came from a direct link -> We should clear the query string (since we don't know what the previous URL was)
+      console.log("ResultViewGrid :: handleClose :: clearing query string");
+      const newUrl = `${window.location.origin}${window.location.pathname}`;
+      window.history.replaceState(null, "", newUrl);
+    }
+
+    setIsModalOpen(false);
   };
 
   useEffect(() => {
-    if (isModalOpen) {
-      window.onpopstate = () => {
-        setIsModalOpen(false);
-      };
+    // We should open this modal if the URL's `uid` query parameter matches this modal's `id`
+    const searchParams = new URLSearchParams(window.location.search);
+    const uidFromUrl = searchParams.get("uid");
+    if (uidFromUrl === id) {
+      console.log("ResultViewGrid :: useEffect :: open the modal");
+      setIsModalOpen(true);
     }
-  });
+  }, [id]);
 
   return (
     <Card
