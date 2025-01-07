@@ -15,13 +15,23 @@ const Statistics = ({ stats }: { stats: Statistic[] }) => {
     <div className="statistics text-lg">
       <div className="statistics-container">
         {stats.map((stat, index) => (
-          <div className="statistic" key={index}>
+          <div
+            className="statistic flex flex-row justify-around gap-5"
+            key={index}
+          >
             <Icon icon={stat.icon} className="iconify-icon" />
-            <div className="statistic-value">
-              <h2 style={{ margin: "0.5rem 0" }}>{stat.value}</h2>
-            </div>
-            <div className="statistic-title">
-              <p style={{ margin: 0, textAlign: "center" }}>{stat.title}</p>
+            <div className="w-fit">
+              <h2
+                className="w-fit"
+                style={{ margin: "0.5rem 0", fontSize: "2.3rem" }}
+              >
+                {stat.value}
+              </h2>
+              <div className="statistic-title">
+                <p className="w-fit" style={{ margin: 0, textAlign: "left" }}>
+                  {stat.title}
+                </p>
+              </div>
             </div>
           </div>
         ))}
